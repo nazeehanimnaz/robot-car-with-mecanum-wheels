@@ -1,1 +1,90 @@
-# robot-car-with-mecanum-wheels
+ <div align="justify"> 
+
+## __WHAT IT DOES__
+This is a simple robot car with mecanum wheels <br>
+ - It moves forward for 2 seconds, then backwards for 2 seconds, then horizontal left for 2 seconds, then horizontal right for 2 seconds, then rotates left for 2 seconds, rotates right for 2 seconds, then moves forward diagonal left for 2 seconds, then forward diagonal right for 2 seconds, the backward diagonal left for 2 seconds, then backward diagonal right for 2 seconds and then stops for 2 seconds.
+ - The process repeats until power is disconnected.
+ - This is to show the basics of a robot car with mecanum wheels.
+ - To change the directions as desired, you need to make changes in the loop() function. Call each function for directions when necessary in the loop() function. Functions for the directions are coded below the loop().
+
+<br>
+
+## __COMPONENTS USED__
+
+1. Arduino UNO x1.
+2. L298N Motor Driver Module x2.
+3. 6V Gear Motor x4.
+4. 3.7V 3500mA 18650 Li-ion Rechargeable Battery x2.
+5. Switch x1.
+6. Jumper wires (as needed).
+7. Mecanum wheels x4.
+
+## __EXTRA COMPONENTS NEEDED__
+
+8. 4 Wheel Car Chassis Kit (this will include 4 Gear Motors) x1.
+9.  Battery chargers.
+10. Battery holders, brackets, protective case, etc. (if needed).
+
+<br><br>
+
+_IMPORTANT NOTE: Do NOT make the robot heavy as this can put more load on the gear motors and cause the robot to NOT move. If the robot needs to be heavier, more powerful motors ranging between 5V to 46V must be used for the wheels. According to the required currect of the new motors, batteries also need to be replaced with batteries with higher current capacities. According to the required voltage for each new motor, batteries also should be replaced with batteries with higher voltage or more batteries of the same range should be connected in series with the already available batteries. As per the datasheet of L298N, the maximum voltage that can be handled by the L298N is 35V. But the recommended voltage is 5V to 12V, as above 12V the L298N can heat up. If the voltage exceeds 12V, the jumper of the L298N must be removed. Check out [this link](https://github.com/nazeehanimnaz/L298N-motor-driver-module/blob/main/README.md) to see how to calculate the exact amount of current and voltage required by a motor._
+
+<br>
+
+## __THE THEORY BEHIND__
+
+1. _How is everything powered up?_ <br>
+   - The rechargeable battery powers up the L298N motor driver module. As the total voltage of the batteries do not exceed 12v, the L298N's jumper is not removed. This makes the 5V pin of the L298N to act as an output. This output is used to give power to the Arduino. <br>
+
+2. _Why are mecanum wheels used?_ <br>
+   - Mecanum wheels are used to provide omnidirectional mobility, allowing a vehicle or robot to move in any direction—forward, backward, sideways (strafe), diagonally, and spin in place without turning its physical chassis.
+  
+3. _How to fix the mecanum wheels?_
+   - Typically, four mecanum wheels are used together (front-left, front-right, rear-left, rear-right). When viewed from above, the angled rollers form an imaginary "X" shape pointing toward the center of the car. Unlike normal wheels, incorrect placement of mecanum wheels can make the car move in the wrong direction.
+
+<br>
+
+## __TIPS__
+
+1. Use high quality batteries for efficiency.
+2. Remove the wire connected to the VIN pin of Arduino before connecting the Arduino to the PC/laptop to upload the code. Once the code is uploaded, disconnect the Arduino from the PC/laptop and connect the wire back to the VIN pin of the Arduino. This is to prevent too much voltage flowing into the Arduino via the laptop and the batteries.
+3. The most common issue while making robotics projects is that the wires break too soon. Either better wires instead of jumper wires should be used, or use a multimeter to constantly check if the jumper wires are in good condition.
+
+<br>
+
+## __PROBLEMS FACED AND SOLUTIONS__
+
+1. _Why do wheels rotate when off the floor, but not when on the floor?_ <br>
+   If wheels are rotating when off the floor, this means that there is no problem with the supplied voltage or current. There could be 3 reasons for this:
+      - It could be due to the heavy load the gear motors have when on the floor. For this reason, make the robot as light as you can. A simple body with a usual chassis would do. <br>
+      - The wheels might not be rotating in the correct directions. If the 2 wheels on the left or right side are rotating opposite to each other when it is supposed to move forward, then the robot will not move. When both wheels are moving opposite to each other, the direction becomes neutral and the robot stops moving. Always ensure, the wheels are rotating in the correct directions off the floor, before keeping the robot on the floor. <br>
+      - Check if the wheels are not aligned or stable and feels shakey when kept on the floor. If it is so, make sure to purchase a good quality chassis and check if all the screws used to fix the gear motors to the chassis are properly tightened. <br>
+
+2. _Why are the wheels not moving at all, even off the floor?_ <br>
+   - This could be due to several reasons from wrong connections, broken wires to short circuited boards. But if all is well and if the issue still persists, the issue could be due to the rechargeable batteries not being able to give enough power to the wheels. Recharge the batteries and try again. <br>
+
+3. _Why are the wheels only moving at full speed instead of varying or reduced speeds?_ <br>
+   - The ENA and ENB pins of the two L298N should are not connected, hence the speed of the wheels cannot be controlled. Note that the jumpers should be on the ENA and ENB pins if you do not intend to change speed. If you want to change speed, then ENA and ENB pins of both L298N should be connected to the PWM pins of the Arduino. If there are not enough pins to do the complete connection, Arduino UNO will have to be replaced with an Arduino MEGA. Use analogWrite() function when changing the speed using ENA and ENB in the code. <br>
+   
+4. _Why do some of the wheels rotate, while the others don't?_ <br>
+   This could be due to issues with the wires connected to the input pins of the L298N or the input pins of L298N itself. <br>
+   - IN1F is working > If the wheel on the front right is rotating forward.
+   - IN2F is working > If the wheel on the front right is rotating backward.
+   - IN3F is working > If the wheel on the front left is rotating forward.
+   - IN4F is working > If the wheel on the front left is rotating backward.
+   - IN1B is working > If the wheel on the back right is rotating forward.
+   - IN2B is working > If the wheel on the back right is rotating backward.
+   - IN3B is working > If the wheel on the back left is rotating forward.
+   - IN4B is working > If the wheel on the back left is rotating backward.
+  
+5. _Why is the car not moving in the intended direction?_
+   - Check if the wheels are fixed correctly. When viewed from above, the angled rollers form an imaginary "X" shape pointing toward the center of the car.
+  
+6. _Why are the wheels moving and stopping quickly and not moving continuously?_
+   - This could be the Arduino resetting. The probable reason for an Arduino to reset in this scenario is that the voltage being provided to the Arduino by one of the L298N motor drivers. If this problem occurs, the best thing is to use a separate power supply for the Arduino, such as power bank, 4xAA batteries, etc.
+
+
+</div>
+   
+
+   
